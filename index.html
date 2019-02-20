@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salesforce Drag & Drop Defect Test</title>
+</head>
+<body>
+<style>
+    body {
+        padding: 1rem;
+        font-family: sans-serif;
+    }
+
+    .drop-area {
+        width: 10rem;
+        height: 10rem;
+        border: 2px dashed #ccc;
+        background: #f9f9f9;
+        display: inline-block;
+    }
+
+    .box {
+        width: 5rem;
+        margin: 1rem;
+        cursor: move;
+        filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    }
+
+    .wrap {
+        display: flex;
+    }
+
+    .section + .section {
+        margin-left: 1rem;
+    }
+
+</style>
+<script>
+    function dragover(event) {
+        console.log('dragover');
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        console.log('drag');
+        event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+        console.log('drop');
+        event.preventDefault();
+        var data = event.dataTransfer.getData("text");
+        event.target.appendChild(document.getElementById(data));
+    }
+</script>
+<h1>Drag &amp; Drop Defect Test</h1>
+<div class="wrap">
+    <div class="section">
+        <p>
+            <b>Reproduce Steps</b>
+        <ol>
+            <li>Place this page in an iframe in Visualforce and place it on Object detail layout in Salesforce classic UI</li>
+            <li>Open Object detail page in Google Chrome verion >=72</li>
+            <li>Drag box into dashed drop area</li>
+        </ol>
+        <b>Expected Result:</b> Box moved to drop area<br/>
+        <b>Actual Result:</b> Box remains in place
+        </p>
+        <p><a href="/" target="blank">Open standalone</a></p>
+    </div>
+
+    <div class="section">
+        <div class="drop-area"
+             id="drop-area"
+             ondrop="drop(event)"
+             ondragover="dragover(event)"></div>
+        <img id="box"
+             class="box"
+             src="https://openclipart.org/download/60103/1273756438.svg"
+             draggable="true"
+             ondragstart="drag(event)"/>
+    </div>
+</div>
+</body>
+</html>
